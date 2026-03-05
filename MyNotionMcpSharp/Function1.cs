@@ -2,21 +2,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Extensions.Mcp;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace MyNotionMcpSharp;
 
-public class Function1
+public class Function1(ILogger<Function1> logger)
 {
-    private readonly ILogger<Function1> _logger;
-
-    public Function1(ILogger<Function1> logger)
-    {
-        _logger = logger;
-    }
-
     [Function(nameof(GetWeatherForecast))]
     public WeatherForecastResult GetWeatherForecast(
     [McpToolTrigger(nameof(GetWeatherForecast), "指定された場所の天気予報を取得します。")]
@@ -24,7 +18,7 @@ public class Function1
     [McpToolProperty(nameof(location), "天気を知りたい場所の名前")]
         string location)
     {
-        _logger.LogInformation("Location: {location}", location);
+        logger.LogInformation("Location: {location}", location);
         return location switch
         {
             "東京" => new WeatherForecastResult("東京", "晴れ"),

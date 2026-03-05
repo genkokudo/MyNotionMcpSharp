@@ -1,14 +1,19 @@
-﻿// =============================
-// NotionClient クラス
-// =============================
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+namespace NotionClientLib;
 
+/// <summary>
+/// NotionClient クラス
+/// </summary>
 public class NotionClient
 {
     private readonly HttpClient _http;
     private const string BASE_URL = "https://api.notion.com/v1";
+    private readonly JsonSerializerOptions options = new()   // "object_" → "object" にシリアライズ時に変換が必要
+    {
+        PropertyNamingPolicy = new ObjectUnderscorePolicy()
+    };
 
     public NotionClient(string apiKey, string version)
     {
@@ -69,12 +74,6 @@ public class NotionClient
             }
         };
 
-        // "object_" → "object" にシリアライズ時に変換が必要
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = new ObjectUnderscorePolicy()
-        };
-
         var json = JsonSerializer.Serialize(body, options);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         var response = await _http.PatchAsync($"{BASE_URL}/blocks/{pageId}/children", content);
@@ -117,11 +116,6 @@ public class NotionClient
                     }
                 }
             }
-        };
-
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = new ObjectUnderscorePolicy()
         };
 
         var json = JsonSerializer.Serialize(body, options);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using NotionClientLib;
 using System.Net.Http.Headers;
 using System.Text.Json;
 

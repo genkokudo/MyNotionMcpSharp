@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using NotionClientLib;
 using System.Security.Cryptography;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MyNotionMcpSharp;
 
@@ -47,7 +48,7 @@ public class NotionTools
     public async Task<string> AppendToNotionPage(
         [McpToolTrigger(nameof(AppendToNotionPage), "サンドボックスページにテキストを追記します。")]
             ToolInvocationContext context,
-        [McpToolProperty(nameof(text), "追記するテキスト", IsRequired = true)]
+        [McpToolProperty(nameof(text), "追記するテキスト", true)]
             string text)
     {
         _logger.LogInformation("AppendToNotionPage: {text}", text);
@@ -60,9 +61,9 @@ public class NotionTools
     public async Task<string> CreateNotionChildPage(
         [McpToolTrigger(nameof(CreateNotionChildPage), "サンドボックス配下に子ページを作成します。")]
             ToolInvocationContext context,
-        [McpToolProperty(nameof(title), "作成するページのタイトル", IsRequired = true)]
+        [McpToolProperty(nameof(title), "作成するページのタイトル", true)]
             string title,
-        [McpToolProperty(nameof(body), "作成するページの本文", IsRequired = true)]
+        [McpToolProperty(nameof(body), "作成するページの本文", true)]
             string body)
     {
         _logger.LogInformation("CreateNotionChildPage: {title}", title);
@@ -94,13 +95,13 @@ public class NotionTools
     public async Task<string> GetChildPage(
         [McpToolTrigger(nameof(GetChildPage), "指定したページIDの内容を取得します。")]
         ToolInvocationContext context,
-        [McpToolProperty(nameof(pageId), "取得するページのID", IsRequired = true)]
-        string pageId)
+        [McpToolProperty(nameof(text), "取得するページのID", true)]
+        string text)
     {
-        _logger.LogInformation("GetChildPage: {pageId}", pageId);
-        if (string.IsNullOrEmpty(pageId))
+        _logger.LogInformation("GetChildPage: {pageId}", text);
+        if (string.IsNullOrEmpty(text))
             return $"エラー: pageIdが空です。context={System.Text.Json.JsonSerializer.Serialize(context)}";
-        return await _notion.GetBlocksAsync(pageId);
+        return await _notion.GetBlocksAsync(text);  // これで試してみる
     }
 
 }

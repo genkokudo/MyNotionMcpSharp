@@ -47,7 +47,7 @@ public class NotionTools
     public async Task<string> AppendToNotionPage(
         [McpToolTrigger(nameof(AppendToNotionPage), "サンドボックスページにテキストを追記します。")]
             ToolInvocationContext context,
-        [McpToolProperty(nameof(text), "追記するテキスト")]
+        [McpToolProperty(nameof(text), "追記するテキスト", IsRequired = true)]
             string text)
     {
         _logger.LogInformation("AppendToNotionPage: {text}", text);
@@ -60,9 +60,9 @@ public class NotionTools
     public async Task<string> CreateNotionChildPage(
         [McpToolTrigger(nameof(CreateNotionChildPage), "サンドボックス配下に子ページを作成します。")]
             ToolInvocationContext context,
-        [McpToolProperty(nameof(title), "作成するページのタイトル")]
+        [McpToolProperty(nameof(title), "作成するページのタイトル", IsRequired = true)]
             string title,
-        [McpToolProperty(nameof(body), "作成するページの本文")]
+        [McpToolProperty(nameof(body), "作成するページの本文", IsRequired = true)]
             string body)
     {
         _logger.LogInformation("CreateNotionChildPage: {title}", title);
@@ -94,7 +94,7 @@ public class NotionTools
     public async Task<string> GetChildPage(
         [McpToolTrigger(nameof(GetChildPage), "指定したページIDの内容を取得します。")]
         ToolInvocationContext context,
-        [McpToolProperty(nameof(pageId), "取得するページのID")]
+        [McpToolProperty(nameof(pageId), "取得するページのID", IsRequired = true)]
         string pageId)
     {
         _logger.LogInformation("GetChildPage: {pageId}", pageId);

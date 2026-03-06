@@ -40,14 +40,13 @@ public class NotionClient
     /// empty.</param>
     /// <returns>A string containing the concatenated plain text of all blocks in the specified page. Returns "（内容なし）" if the
     /// page contains no content blocks.</returns>
-    /// <exception cref="Exception">Thrown if the HTTP request to retrieve the page blocks fails.</exception>
     public async Task<string> GetBlocksAsync(string pageId)
     {
         var response = await _http.GetAsync($"{BASE_URL}/blocks/{pageId}/children");
         var json = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
-            throw new Exception($"取得失敗: {json}");
+            return $"取得失敗: {response.StatusCode} / {json}"; // ← throwじゃなくてreturnに変える！
 
         // テキストだけ抜き出す
         var doc = JsonDocument.Parse(json);

@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="MinimumApp/MinimumApp.csproj" Id="3b169cbb-d259-41a2-b6b5-bfc08cdc4533" />
   <Project Path="MyNotionMcpSharp/MyNotionMcpSharp.csproj" />
   <Project Path="NotionClientLib/NotionClientLib.csproj" Id="deee15ff-3e28-481b-bf16-3eabf7f39d08" />
 </Solution>

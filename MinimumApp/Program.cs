@@ -61,12 +61,25 @@ Console.WriteLine("=== ① ページの中身を読む ===");
 var blocks = await notion.GetBlocksAsync(targetPageId);
 Console.WriteLine(blocks);
 
-Console.WriteLine("\n=== ② ページに書き込む ===");
-await notion.AppendTextAsync(targetPageId, "俺からのテストメッセージや！🐔");
-Console.WriteLine("書き込み完了！");
+//Console.WriteLine("\n=== ② ページに書き込む ===");
+//await notion.AppendTextAsync(targetPageId, "俺からのテストメッセージや！🐔");
+//Console.WriteLine("書き込み完了！");
 
-Console.WriteLine("\n=== ③ 子ページを作る ===");
-var newPageId = await notion.CreateChildPageAsync(targetPageId, "テスト子ページ", "ここが本文や！");
-Console.WriteLine($"作成した子ページID: {newPageId}");
+//Console.WriteLine("\n=== ③ 子ページを作る ===");
+//var newPageId = await notion.CreateChildPageAsync(targetPageId, "テスト子ページ", "ここが本文や！");
+//Console.WriteLine($"作成した子ページID: {newPageId}");
+
+Console.WriteLine("=== ページ一覧を取得 ===");
+var pages = await notion.GetChildPageListAsync(targetPageId);
+foreach (var page in pages)
+{
+    Console.WriteLine($"- {page.Title} (ID: {page.Id})");
+}
+
+Console.WriteLine("=== 最後の子ページを取得 ===");
+var lastPageId = pages.LastOrDefault().Id;
+var lastPageBlocks = await notion.GetBlocksAsync(lastPageId);
+Console.WriteLine(lastPageBlocks);
+
 
 

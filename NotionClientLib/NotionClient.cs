@@ -42,11 +42,12 @@ public class NotionClient
     /// page contains no content blocks.</returns>
     public async Task<string> GetBlocksAsync(string pageId)
     {
-        var response = await _http.GetAsync($"{BASE_URL}/blocks/{pageId}/children");
+        var url = $"{BASE_URL}/blocks/{pageId}/children";
+        var response = await _http.GetAsync(url);
         var json = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
-            return $"取得失敗: {response.StatusCode} / {json}"; // ← throwじゃなくてreturnに変える！
+            return $"取得失敗: {response.StatusCode} / {json}\nURL: {url}";
 
         // テキストだけ抜き出す
         var doc = JsonDocument.Parse(json);

@@ -98,6 +98,8 @@ public class NotionTools
         string pageId)
     {
         _logger.LogInformation("GetChildPage: {pageId}", pageId);
+        if (string.IsNullOrEmpty(pageId))
+            return $"エラー: pageIdが空です。context={System.Text.Json.JsonSerializer.Serialize(context)}";
         return await _notion.GetBlocksAsync(pageId);
     }
 

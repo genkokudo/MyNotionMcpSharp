@@ -69,5 +69,36 @@ public class NotionTools
         var newPageId = await _notion.CreateChildPageAsync(_pageId, title, body);
         return $"作成完了！ページID: {newPageId}";
     }
+    
+    // 子ページ一覧取得
+    [Function(nameof(GetChildPageList))]
+    public async Task<string> GetChildPageList(
+        [McpToolTrigger(nameof(GetChildPageList), "サンドボックス配下のページ一覧を取得します。")]
+        ToolInvocationContext context)
+    {
+        _logger.LogInformation("GetChildPageList: {pageId}", _pageId);
+        var pages = await _notion.GetChildPageListAsync(_pageId);
+
+        if (!pages.Any())
+            return "子ページなし";
+
+        var sb = new StringBuilder();
+        foreach (var (id, title) in pages)
+            sb.AppendLine($"{title}: {id}");
+
+        return sb.ToString();
+    }
+
+    // 指定ページの内容取得
+    [Function(nameof(GetChildPage))]
+    public async Task<string> GetChildPage(
+        [McpToolTrigger(nameof(GetChildPage), "指定したページIDの内容を取得します。")]
+        ToolInvocationContext context,
+        [McpToolProperty(nameof(pageId), "取得するページのID")]
+        string pageId)
+    {
+        _logger.LogInformation("GetChildPage: {pageId}", pageId);
+        return await _notion.GetBlocksAsync(pageId);
+    }
 
 }

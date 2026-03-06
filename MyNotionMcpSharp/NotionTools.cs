@@ -90,18 +90,30 @@ public class NotionTools
         return sb.ToString();
     }
 
+    //// ===== Notion: 指定ページの内容取得 =====
+    //[Function(nameof(GetChildPage))]
+    //public async Task<string> GetChildPage(
+    //    [McpToolTrigger(nameof(GetChildPage), "指定したページIDの内容を取得します。")]
+    //    ToolInvocationContext context,
+    //    [McpToolProperty(nameof(text), "取得するページのID", true)]
+    //    string text)
+    //{
+    //    _logger.LogInformation("GetChildPage: {pageId}", text);
+    //    if (string.IsNullOrEmpty(text))
+    //        return $"エラー: pageIdが空です。context={System.Text.Json.JsonSerializer.Serialize(context)}";
+    //    return await _notion.GetBlocksAsync(text);  // これで試してみる
+    //}
     // ===== Notion: 指定ページの内容取得 =====
     [Function(nameof(GetChildPage))]
     public async Task<string> GetChildPage(
         [McpToolTrigger(nameof(GetChildPage), "指定したページIDの内容を取得します。")]
-        ToolInvocationContext context,
-        [McpToolProperty(nameof(text), "取得するページのID", true)]
-        string text)
+    ToolInvocationContext context,
+        [McpToolProperty("pageId", "取得するページのID", true)] // ← nameofやなく文字列リテラルで！
+    string pageId)
     {
-        _logger.LogInformation("GetChildPage: {pageId}", text);
-        if (string.IsNullOrEmpty(text))
+        _logger.LogInformation("GetChildPage: {pageId}", pageId);
+        if (string.IsNullOrEmpty(pageId))
             return $"エラー: pageIdが空です。context={System.Text.Json.JsonSerializer.Serialize(context)}";
-        return await _notion.GetBlocksAsync(text);  // これで試してみる
+        return await _notion.GetBlocksAsync(pageId);
     }
-
 }

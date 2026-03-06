@@ -11,6 +11,4 @@ builder.Services
     .AddApplicationInsightsTelemetryWorkerService()
     .ConfigureFunctionsApplicationInsights();
 
-// Aspire入れてないからMCPツールは動きません
-
 builder.Build().Run();
